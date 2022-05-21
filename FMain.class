@@ -1,0 +1,35 @@
+' Gambas class file
+
+
+
+Public Sub form_Close()
+  
+
+  
+End
+
+Public Sub Form_Open()
+Dim f1 As File
+f1 = Open "/tmp/binupload" For Create 
+Close f1
+f1 = Open "/tmp/binupload.out" For Create 
+Close f1
+f1 = Open "/tmp/multiupload" For Create 
+Close f1
+f1.Save("/tmp/binupload", "")
+f1.Save("/tmp/binupload.out", "")
+f1.Save("/tmp/multiupload", "")
+  
+
+End
+Public Sub Button1_Click()
+Dim f1 As File
+Dim a As String 
+Dim aa As String 
+aa = "for a in $(ls " & TextBox3.text & ")\ndo\n xxd $a > /tmp/binupload \nnetcat " & TextBox1.Text & " " & TextBox2.Text & "  < /tmp/binupload\ndone\nsleep 1\n"
+f1 = Open "/tmp/multiupload" For Create 
+Close f1
+f1.Save("/tmp/multiupload", aa)
+  Shell "bash /tmp/multiupload"
+End
+
